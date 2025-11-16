@@ -1,0 +1,16 @@
+Тестовый номер;URL;Метод запроса;Тело запроса JSON;Ожидаемый результат
+1;/pet/add;POST;{"id": 0, "category": {"id": 0}, "name": ""};201
+2;/pet/add;POST;{"id": 99999999, "category": {"id": 0}, "name": ""};201
+3;/pet/add;POST;{"id": -1, "category": {"id": 0}, "name": ""};400
+4;/pet/add;POST;{"id": 1, "category": {"id": 0}, "name": "dog"};201
+5;/pet/add;POST;{"id": 1, "category": {"id": 1}, "name": "dog", "status": null};400
+6;/pet/add;POST;{"id": 1, "category": {"id": 1}, "name": "x".repeat(255)};201
+7;/pet/add;POST;{"id": 1, "category": {"id": 1}, "tags": ["x".repeat(255)] * 100};201
+8;/pet/add;POST;{"id": 1, "category": {"id": 1}, "name": "a"};201
+9;/pet/add;POST;{"id": 1, "category": {"id": 1}, "photoUrls": ["url1", "url2"]};201
+10;/pet/update;PUT;{"id": 1, "category": {"id": 1}, "status": "unknown"};400
+11;/pet/deletePhoto;DELETE;{"id": 1, "photoUrl": "url2"};200
+12;/pet/deletePhoto;DELETE;{"id": 1, "photoUrl": "nonexistent_url"};404
+13;/pet/add;POST;{"id": 1, "category": {"id": 1}, "tags": [{"id": 1}]};201
+14;/pet/add;POST;{"id": 1, "category": {"id": 1}, "tags": [{"id": 1}, {"id": 1}]};400
+15;/pet/add;POST;{"id": 1, "category": {"id": 1}, "name": "x".repeat(256)};400

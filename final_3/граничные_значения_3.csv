@@ -1,0 +1,4 @@
+id,name,status,category_id,tags_id
+0,"","available",0,0
+-1,"",-1,0,0
+99999999,"",null,0,0
