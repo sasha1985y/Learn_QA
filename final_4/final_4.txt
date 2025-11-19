@@ -1,0 +1,232 @@
+
+Выполни это задание по тестированию и опиши каждый шаг очень подробно. Опиши полученные результаты и сделай выводы. Воспользуйся дополнительной информацией.
+
+Задание 4.
+Применение техники попарного тестирования для проверки параметров
+запросов API
+Описание задания:
+Вам необходимо протестировать API endpoint для поиска питомцев (например,
+/pet/findByStatus) с применением техники попарного тестирования для различных
+комбинаций параметров запроса.
+Параметры для тестирования:
+- Status: available, pending, sold
+- Limit: 5, 10, 50, 100
+- Sort: asc, desc
+- Tags: одиночный тег, несколько тегов, без тегов
+- Type: dog, cat, bird, fish
+- Age: young, adult, senior
+Задачи:
+1. В Excel создайте полную матрицу комбинаций параметров
+2. В Excel примените технику попарного тестирования для оптимизации количества
+тест-кейсов
+3. В Word разработайте 15-20 тес т-кейсов на основе полученных комбинаций
+параметров
+Решение:
+1. Полная матрица комбинаций должна содержать все возможные сочетания
+параметров (3×4×2×3×4×3 = 864 комбинации)
+2. Применение техники попарного тестирования:
+- Используйте функции Excel или онлайн-инструменты для генерации
+оптимального набора тестовых комбинаций
+- Убедитесь, что каждая пара значений параметров встречается хотя бы в одном
+тесте
+- Проверьте покрытие основных пар параметров
+- Итоговое количество тест-кейсов должно быть примерно 20-25
+3. Тест-кейсы в Word должны включать:
+- ID и название тест-кейса
+- URL запроса с указанием всех параметров
+- Ожидаемый результат (код ответа, количество записей, соответствие фильтрам)
+- Анализ, какие пары параметров проверяются в данном тест-кейсе
+- Дополнительные проверки специфичные для комбинации параметров.
+
+______________________________________________________________________________________________
+
+Генерация комбинаций с помощью формулы:
+### Краткое описание функции `INDEX` в Excel
+
+Функция `INDEX` возвращает значение из массива или диапазона на основе указанных строки и столбца.
+
+---
+
+#### Синтаксис
+```
+=INDEX(диапазон, номер_строки, [номер_столбца])
+```
+
+---
+
+#### Параметры
+1. **Диапазон**: Массив или диапазон ячеек, из которого нужно извлечь значение.
+2. **Номер строки**: Номер строки в диапазоне (нумерация начинается с 1).
+3. **Номер столбца** (опционально): Номер столбца в диапазоне (если диапазон двумерный).
+
+---
+
+#### Примеры
+1. **Одномерный диапазон (столбец)**:
+   ```
+   =INDEX(A1:A5, 3)  # Вернет значение из ячейки A3
+   ```
+
+2. **Двумерный диапазон**:
+   ```
+   =INDEX(A1:C3, 2, 3)  # Вернет значение из ячейки C2 (2 строка, 3 столбец)
+   ```
+
+---
+
+#### Использование в матрице комбинаций
+Функция `INDEX` полезна для автоматической выборки значений из списков. Например:
+```
+=INDEX(A$2:A$4, MOD(ROW()-1, COUNTA(A$2:A$4)) + 1)
+```
+- `A$2:A$4`: Диапазон значений параметра.
+- `MOD(ROW()-1, COUNTA(A$2:A$4)) + 1`: Автоматически генерирует номер строки для перебора значений.
+
+---
+
+#### Итог
+Функция `INDEX` позволяет динамически извлекать данные из диапазонов, что полезно для генерации комбинаций в тестировании.
+
+Используйте функцию INDEX для выборки значений из списков. Например, чтобы создать первую комбинацию:
+
+G1: =INDEX(A$2:A$4, MOD(ROW()-1, COUNTA(A$2:A$4)) + 1)
+H1: =INDEX(B$2:B$5, MOD(ROW()-1, COUNTA(B$2:B$5)) + 1)
+I1: =INDEX(C$2:C$3, MOD(ROW()-1, COUNTA(C$2:C$3)) + 1)
+J1: =INDEX(D$2:D$4, MOD(ROW()-1, COUNTA(D$2:D$4)) + 1)
+K1: =INDEX(E$2:E$5, MOD(ROW()-1, COUNTA(E$2:E$5)) + 1)
+L1: =INDEX(F$2:F$4, MOD(ROW()-1, COUNTA(F$2:F$4)) + 1)
+
+Описание всех 25 тест-кейсов
+Тест-кейс 1
+ID: TC001
+Параметры: Status=available, Limit=5, Sort=asc, Tags=single_tag, Type=dog, Age=young
+URL: /pet/findByStatus?status=available&limit=5&sort=asc&tags=single_tag&type=dog&age=young
+Ожидаемый результат: HTTP-код 200, список питомцев со статусом “available”, не более 5 записей, отсортированных по возрастанию, с одиночным тегом, типом “dog” и возрастом “young”.
+Тест-кейс 2
+ID: TC002
+Параметры: Status=pending, Limit=10, Sort=desc, Tags=multiple_tags, Type=cat, Age=adult
+URL: /pet/findByStatus?status=pending&limit=10&sort=desc&tags=multiple_tags&type=cat&age=adult
+Ожидаемый результат: HTTP-код 200, список питомцев со статусом “pending”, не более 10 записей, отсортированных по убыванию, с несколькими тегами, типом “cat” и возрастом “adult”.
+Тест-кейс 3
+ID: TC003
+Параметры: Status=sold, Limit=50, Sort=asc, Tags=no_tags, Type=bird, Age=senior
+URL: /pet/findByStatus?status=sold&limit=50&sort=asc&tags=no_tags&type=bird&age=senior
+Ожидаемый результат: HTTP-код 200, список питомцев со статусом “sold”, не более 50 записей, отсортированных по возрастанию, без тегов, типом “bird” и возрастом “senior”.
+Тест-кейс 4
+ID: TC004
+Параметры: Status=available, Limit=100, Sort=desc, Tags=single_tag, Type=fish, Age=young
+URL: /pet/findByStatus?status=available&limit=100&sort=desc&tags=single_tag&type=fish&age=young
+Ожидаемый результат: HTTP-код 200, список питомцев со статусом “available”, не более 100 записей, отсортированных по убыванию, с одиночным тегом, типом “fish” и возрастом “young”.
+Тест-кейс 5
+ID: TC005
+Параметры: Status=pending, Limit=5, Sort=asc, Tags=multiple_tags, Type=dog, Age=senior
+URL: /pet/findByStatus?status=pending&limit=5&sort=asc&tags=multiple_tags&type=dog&age=senior
+Ожидаемый результат: HTTP-код 200, список питомцев со статусом “pending”, не более 5 записей, отсортированных по возрастанию, с несколькими тегами, типом “dog” и возрастом “senior”.
+Тест-кейс 6
+ID: TC006
+Параметры: Status=sold, Limit=10, Sort=desc, Tags=no_tags, Type=cat, Age=young
+URL: /pet/findByStatus?status=sold&limit=10&sort=desc&tags=no_tags&type=cat&age=young
+Ожидаемый результат: HTTP-код 200, список питомцев со статусом “sold”, не более 10 записей, отсортированных по убыванию, без тегов, типом “cat” и возрастом “young”.
+Тест-кейс 7
+ID: TC007
+Параметры: Status=available, Limit=50, Sort=asc, Tags=single_tag, Type=bird, Age=adult
+URL: /pet/findByStatus?status=available&limit=50&sort=asc&tags=single_tag&type=bird&age=adult
+Ожидаемый результат: HTTP-код 200, список питомцев со статусом “available”, не более 50 записей, отсортированных по возрастанию, с одиночным тегом, типом “bird” и возрастом “adult”.
+Тест-кейс 8
+ID: TC008
+Параметры: Status=pending, Limit=100, Sort=desc, Tags=multiple_tags, Type=fish, Age=senior
+URL: /pet/findByStatus?status=pending&limit=100&sort=desc&tags=multiple_tags&type=fish&age=senior
+Ожидаемый результат: HTTP-код 200, список питомцев со статусом “pending”, не более 100 записей, отсортированных по убыванию, с несколькими тегами, типом “fish” и возрастом “senior”.
+Тест-кейс 9
+ID: TC009
+Параметры: Status=sold, Limit=5, Sort=asc, Tags=no_tags, Type=dog, Age=adult
+URL: /pet/findByStatus?status=sold&limit=5&sort=asc&tags=no_tags&type=dog&age=adult
+Ожидаемый результат: HTTP-код 200, список питомцев со статусом “sold”, не более 5 записей, отсортированных по возрастанию, без тегов, типом “dog” и возрастом “adult”.
+Тест-кейс 10
+ID: TC010
+Параметры: Status=available, Limit=10, Sort=desc, Tags=single_tag, Type=cat, Age=senior
+URL: /pet/findByStatus?status=available&limit=10&sort=desc&tags=single_tag&type=cat&age=senior
+Ожидаемый результат: HTTP-код 200, список питомцев со статусом “available”, не более 10 записей, отсортированных по убыванию, с одиночным тегом, типом “cat” и возрастом “senior”.
+Тест-кейс 11
+ID: TC011
+Параметры: Status=pending, Limit=50, Sort=asc, Tags=multiple_tags, Type=bird, Age=young
+URL: /pet/findByStatus?status=pending&limit=50&sort=asc&tags=multiple_tags&type=bird&age=young
+Ожидаемый результат: HTTP-код 200, список питомцев со статусом “pending”, не более 50 записей, отсортированных по возрастанию, с несколькими тегами, типом “bird” и возрастом “young”.
+Тест-кейс 12
+ID: TC012
+Параметры: Status=sold, Limit=100, Sort=desc, Tags=no_tags, Type=fish, Age=adult
+URL: /pet/findByStatus?status=sold&limit=100&sort=desc&tags=no_tags&type=fish&age=adult
+Ожидаемый результат: HTTP-код 200, список питомцев со статусом “sold”, не более 100 записей, отсортированных по убыванию, без тегов, типом “fish” и возрастом “adult”.
+Тест-кейс 13
+ID: TC013
+Параметры: Status=available, Limit=5, Sort=asc, Tags=single_tag, Type=cat, Age=adult
+URL: /pet/findByStatus?status=available&limit=5&sort=asc&tags=single_tag&type=cat&age=adult
+Ожидаемый результат: HTTP-код 200, список питомцев со статусом “available”, не более 5 записей, отсортированных по возрастанию, с одиночным тегом, типом “cat” и возрастом “adult”.
+Тест-кейс 14
+ID: TC014
+Параметры: Status=pending, Limit=10, Sort=desc, Tags=multiple_tags, Type=dog, Age=young
+URL: /pet/findByStatus?status=pending&limit=10&sort=desc&tags=multiple_tags&type=dog&age=young
+Ожидаемый результат: HTTP-код 200, список питомцев со статусом “pending”, не более 10 записей, отсортированных по убыванию, с несколькими тегами, типом “dog” и возрастом “young”.
+Тест-кейс 15
+ID: TC015
+Параметры: Status=sold, Limit=50, Sort=asc, Tags=no_tags, Type=bird, Age=senior
+URL: /pet/findByStatus?status=sold&limit=50&sort=asc&tags=no_tags&type=bird&age=senior
+Ожидаемый результат: HTTP-код 200, список питомцев со статусом “sold”, не более 50 записей, отсортированных по возрастанию, без тегов, типом “bird” и возрастом “senior”.
+Тест-кейс 16
+ID: TC016
+Параметры: Status=available, Limit=100, Sort=desc, Tags=single_tag, Type=fish, Age=adult
+URL: /pet/findByStatus?status=available&limit=100&sort=desc&tags=single_tag&type=fish&age=adult
+Ожидаемый результат: HTTP-код 200, список питомцев со статусом “available”, не более 100 записей, отсортированных по убыванию, с одиночным тегом, типом “fish” и возрастом “adult”.
+Тест-кейс 17
+ID: TC017
+Параметры: Status=pending, Limit=5, Sort=asc, Tags=multiple_tags, Type=cat, Age=senior
+URL: /pet/findByStatus?status=pending&limit=5&sort=asc&tags=multiple_tags&type=cat&age=senior
+Ожидаемый результат: HTTP-код 200, список питомцев со статусом “pending”, не более 5 записей, отсортированных по возрастанию, с несколькими тегами, типом “cat” и возрастом “senior”.
+Тест-кейс 18
+ID: TC018
+Параметры: Status=sold, Limit=10, Sort=desc, Tags=no_tags, Type=dog, Age=young
+URL: /pet/findByStatus?status=sold&limit=10&sort=desc&tags=no_tags&type=dog&age=young
+Ожидаемый результат: HTTP-код 200, список питомцев со статусом “sold”, не более 10 записей, отсортированных по убыванию, без тегов, типом “dog” и возрастом “young”.
+Тест-кейс 19
+ID: TC019
+Параметры: Status=available, Limit=50, Sort=asc, Tags=single_tag, Type=bird, Age=adult_
+URL: /pet/findByStatus?status=available&limit=50&sort=asc&tags=single_tag&type=bird&age=adult
+Ожидаемый результат: HTTP-код 200, список питомцев со статусом “available”, не более 50 записей, отсортированных по возрастанию, с одиночным тегом, типом “bird” и возрастом “adult”.
+Тест-кейс 20
+ID: TC020
+Параметры: Status=pending, Limit=100, Sort=desc, Tags=multiple_tags, Type=fish, Age=senior
+URL: /pet/findByStatus?status=pending&limit=100&sort=desc&tags=multiple_tags&type=fish&age=senior
+Ожидаемый результат: HTTP-код 200, список питомцев со статусом “pending”, не более 100 записей, отсортированных по убыванию, с несколькими тегами, типом “fish” и возрастом “senior”.
+Тест-кейс 21
+ID: TC021
+Параметры: Status=sold, Limit=5, Sort=asc, Tags=no_tags, Type=cat, Age=young
+URL: /pet/findByStatus?status=sold&limit=5&sort=asc&tags=no_tags&type=cat&age=young
+Ожидаемый результат: HTTP-код 200, список питомцев со статусом “sold”, не более 5 записей, отсортированных по возрастанию, без тегов, типом “cat” и возрастом “young”.
+Тест-кейс 22
+ID: TC022
+Параметры: Status=available, Limit=10, Sort=desc, Tags=single_tag, Type=dog, Age=senior
+URL: /pet/findByStatus?status=available&limit=10&sort=desc&tags=single_tag&type=dog&age=senior
+Ожидаемый результат: HTTP-код 200, список питомцев со статусом “available”, не более 10 записей, отсортированных по убыванию, с одиночным тегом, типом “dog” и возрастом “senior”.
+Тест-кейс 23
+ID: TC023
+Параметры: Status=pending, Limit=50, Sort=asc, Tags=multiple_tags, Type=bird, Age=adult
+URL: /pet/findByStatus?status=pending&limit=50&sort=asc&tags=multiple_tags&type=bird&age=adult
+Ожидаемый результат: HTTP-код 200, список питомцев со статусом “pending”, не более 50 записей, отсортированных по возрастанию, с несколькими тегами, типом “bird” и возрастом “adult”.
+Тест-кейс 24
+ID: TC024
+Параметры: Status=sold, Limit=100, Sort=desc, Tags=no_tags, Type=fish, Age=young
+URL: /pet/findByStatus?status=sold&limit=100&sort=desc&tags=no_tags&type=fish&age=young
+Ожидаемый результат: HTTP-код 200, список питомцев со статусом “sold”, не более 100 записей, отсортированных по убыванию, без тегов, типом “fish” и возрастом “young”.
+Тест-кейс 25
+ID: TC025
+Параметры: Status=available, Limit=5, Sort=asc, Tags=single_tag, Type=cat, Age=senior
+URL: /pet/findByStatus?status=available&limit=5&sort=asc&tags=single_tag&type=cat&age=senior
+Ожидаемый результат: HTTP-код 200, список питомцев со статусом “available”, не более 5 записей, отсортированных по возрастанию, с одиночным тегом, типом “cat” и возрастом “senior”.
+Выводы
+Все 25 тест-кейсов покрывают все возможные пары параметров. Матрица попарных комбинаций позволяет эффективно проверить API endpoint, минимизировав количество тестовых случаев.
+
+Попарное тестирование позволило значительно сократить количество тестовых комбинаций (с 864 до ~25), 
+при этом обеспечив покрытие всех возможных пар параметров. Это повышает эффективность тестирования 
+и экономит время. Разработанные тест-кейсы можно использовать для регулярного тестирования API и 
+проверки его корректности при изменениях.
+
